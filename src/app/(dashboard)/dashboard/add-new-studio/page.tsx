@@ -45,11 +45,14 @@ const fieldClass =
 
 const labelClass =
   "mb-2 block font-mono text-[9px] uppercase tracking-[0.18em] text-[#5E574C]";
-  const handleSubmit =async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
+    const data: Record<string, FormDataEntryValue | FormDataEntryValue[]> =
+      Object.fromEntries(
+        [...formData.entries()].filter(([name]) => name !== "amenities")
+      );
+    data.amenities = formData.getAll("amenities").map(String);
 
     const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`,{
       method: 'POST',
@@ -58,6 +61,9 @@ const labelClass =
       },
       body: JSON.stringify(data)
     })
+    if (!result.ok) {
+      throw new Error(`Failed to publish studio (${result.status})`);
+    }
     const studios = await result.json();
     console.log(studios);
   }

@@ -10,6 +10,7 @@ import {
   ArrowRight,
   ArrowUpRight,
 } from "lucide-react";
+import { signIn } from "@/lib/auth-client";
 
 const labelClass =
   "font-mono text-[9px] uppercase tracking-[0.18em] text-[#6B6357]";
@@ -22,8 +23,9 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const LoginPage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
 
@@ -51,7 +53,6 @@ const LoginPage = () => {
       return;
     }
 
-    // UI-only preview: valid details simulate a successful login.
     const params = new URLSearchParams(window.location.search);
     const requested = params.get("callbackUrl") || params.get("next") || "/";
     const destination =
@@ -59,7 +60,21 @@ const LoginPage = () => {
         ? requested
         : "/";
 
+    setLoading(true);
+    const { error: signInError } = await signIn.email({
+      email,
+      password,
+      callbackURL: destination,
+    });
+    setLoading(false);
+
+    if (signInError) {
+      setError(signInError.message || "Invalid email or password.");
+      return;
+    }
+
     router.replace(destination);
+    router.refresh();
   };
 
   return (
@@ -272,9 +287,10 @@ const LoginPage = () => {
 
               <button
                 type="submit"
-                className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#D9542B] text-[11px] font-semibold uppercase tracking-[0.16em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F2]"
+                disabled={loading}
+                className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#D9542B] text-[11px] font-semibold uppercase tracking-[0.16em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F2] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Login
+                {loading ? "Signing in..." : "Login"}
                 <ArrowRight className="size-4" />
               </button>
             </form>

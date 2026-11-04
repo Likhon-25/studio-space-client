@@ -12,6 +12,7 @@ import {
   Check,
   Circle,
 } from "lucide-react";
+import { signUp } from "@/lib/auth-client";
 
 const labelClass =
   "font-mono text-[9px] uppercase tracking-[0.18em] text-[#6B6357]";
@@ -26,6 +27,7 @@ const RegisterPage = () => {
   const router = useRouter();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const passwordRules = [
     { label: "Minimum 6 characters", valid: password.length >= 6 },
@@ -35,7 +37,7 @@ const RegisterPage = () => {
 
   const passwordValid = passwordRules.every((rule) => rule.valid);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
 
@@ -82,8 +84,22 @@ const RegisterPage = () => {
       return;
     }
 
-    // UI-only preview: valid details simulate a successful registration.
-    router.replace("/login");
+    setLoading(true);
+    const { error: signUpError } = await signUp.email({
+      name,
+      email,
+      password: nextPassword,
+      image: photoUrl || undefined,
+    });
+    setLoading(false);
+
+    if (signUpError) {
+      setError(signUpError.message || "We could not create your account.");
+      return;
+    }
+
+    router.replace("/");
+    router.refresh();
   };
 
   return (
@@ -352,9 +368,10 @@ const RegisterPage = () => {
 
               <button
                 type="submit"
-                className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#D9542B] text-[11px] font-semibold uppercase tracking-[0.16em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F2]"
+                disabled={loading}
+                className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#D9542B] text-[11px] font-semibold uppercase tracking-[0.16em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F2] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Register
+                {loading ? "Creating account..." : "Register"}
                 <ArrowRight className="size-4" />
               </button>
             </form>

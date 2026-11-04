@@ -87,7 +87,23 @@ const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
         }
       );
 
-      const bookingRes = await result.json();
+      const responseText = await result.text();
+      const contentType = result.headers.get("content-type") ?? "";
+      let bookingRes: { message?: string } | null = null;
+
+      if (contentType.includes("application/json")) {
+        try {
+          bookingRes = JSON.parse(responseText);
+        } catch {
+          throw new Error("The server returned invalid JSON. Please try again.");
+        }
+      } else {
+        throw new Error(
+          responseText.startsWith("<!DOCTYPE")
+            ? "Booking API returned a server error page. Make sure the Express server is running."
+            : "We could not confirm your booking. Please try again."
+        );
+      }
 
       if (!result.ok) {
         throw new Error(

@@ -1,14 +1,12 @@
 import Link from "next/link";
+import BookingPanel from "./_components/BookingPanel";
 import {
   Aperture,
   ArrowLeft,
-  ArrowRight,
-  CalendarDays,
   Check,
   MapPin,
   ShieldCheck,
   Star,
-  Users,
 } from "lucide-react";
 
 type Review = {
@@ -36,12 +34,6 @@ type Studio = {
   reviews?: Review[];
 };
 
-const money = (value: number | string | undefined) => {
-  const amount = Number(value ?? 0);
-  return Number.isFinite(amount)
-    ? `$${amount.toLocaleString("en-US")}`
-    : "$0";
-};
 
 const amenityList = (amenities: Studio["amenities"]) => {
   if (Array.isArray(amenities)) return amenities.filter(Boolean);
@@ -278,65 +270,12 @@ const StudioDetails = async ({ params }: { params: { id: string } }) => {
             id="booking"
             className="order-1 xl:sticky xl:top-28 xl:order-2"
           >
-            <div className="rounded-2xl border border-[#D8CFC0] bg-[#FBF8F2] p-5 shadow-sm sm:p-6">
-              <div className="flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5E574C]">
-                <span className="size-1.5 rounded-full bg-[#D9542B]" />
-                Reserve this space
-              </div>
-
-              <div className="mt-4 flex items-end justify-between gap-3">
-                <p>
-                  <span className="font-serif text-4xl leading-none text-[#191713]">
-                    {money(studio.rate)}
-                  </span>
-                  <span className="ml-1.5 text-xs text-[#8A8173]">/ hr</span>
-                </p>
-                <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#8A8173]">
-                  Studio rate
-                </span>
-              </div>
-
-              <div className="mt-5 space-y-3 border-t border-[#E4DACC] pt-4">
-                <div className="flex items-center justify-between gap-3 text-[13px]">
-                  <span className="flex items-center gap-2 text-[#6B6357]">
-                    <ShieldCheck
-                      className="size-4 text-[#D9542B]"
-                      strokeWidth={1.8}
-                    />
-                    Security deposit
-                  </span>
-                  <span className="font-medium text-[#191713]">
-                    {money(studio.deposit)}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between gap-3 text-[13px]">
-                  <span className="flex items-center gap-2 text-[#6B6357]">
-                    <Users
-                      className="size-4 text-[#D9542B]"
-                      strokeWidth={1.8}
-                    />
-                    Maximum capacity
-                  </span>
-                  <span className="font-medium text-[#191713]">
-                    {studio.capacity ? `${studio.capacity} guests` : "On request"}
-                  </span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#D9542B] text-[11px] font-semibold uppercase tracking-[0.16em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F]"
-              >
-                <CalendarDays className="size-4" />
-                Book Workspace Now
-                <ArrowRight className="size-4" />
-              </button>
-
-              <p className="mt-3 text-center text-[11px] leading-relaxed text-[#8A8173]">
-                No payment is taken today.
-              </p>
-            </div>
+            <BookingPanel
+              studioId={studio._id}
+              rate={studio.rate ?? 0}
+              deposit={studio.deposit ?? 0}
+              capacity={studio.capacity ?? 0}
+            />
 
             <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-[#E4DACC] bg-[#F4EEE4] p-4 text-[11px] leading-relaxed text-[#6B6357]">
               <ShieldCheck

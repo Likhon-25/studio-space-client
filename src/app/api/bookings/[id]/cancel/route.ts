@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { getAuthToken } from "@/lib/auth-token";
 
 export async function PATCH(
   _request: Request,
@@ -23,29 +24,16 @@ export async function PATCH(
     );
   }
 
-  const email = session.user.email.trim().toLowerCase();
-  const bookingsResponse = await fetch(
-    `${backendUrl}/all-studios/booking/${encodeURIComponent(email)}`,
-    { cache: "no-store" }
-  );
-  if (!bookingsResponse.ok) {
-    return NextResponse.json(
-      { message: "Booking could not be verified" },
-      { status: 500 }
-    );
+  const token = await getAuthToken();
+  if (!token) {
+    return NextResponse.json({ message: "Authentication token could not be created" }, { status: 401 });
   }
-
-  const bookings = await bookingsResponse.json();
-  const ownsBooking = Array.isArray(bookings) && bookings.some(
-    (booking) => String(booking._id) === id
-  );
-  if (!ownsBooking) {
-    return NextResponse.json({ message: "Forbidden" }, { status: 403 });
-  }
-
   const response = await fetch(
     `${backendUrl}/all-studios/booking/${id}/cancel`,
-    { method: "PATCH" }
+    {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 
   return NextResponse.json(await response.json(), { status: response.status });

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { getAuthToken } from "@/lib/auth-token";
 
 export async function POST(request: Request) {
   const session = await auth.api.getSession({
@@ -29,10 +30,20 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+  const token = await getAuthToken();
+  if (!token) {
+    return NextResponse.json(
+      { message: "Authentication token could not be created" },
+      { status: 401 }
+    );
+  }
 
   const response = await fetch(`${backendUrl}/all-studios/booking`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(bookingData),
   });
 

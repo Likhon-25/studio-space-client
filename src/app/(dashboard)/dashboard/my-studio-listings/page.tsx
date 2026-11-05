@@ -53,10 +53,7 @@ const MyStudioListings = () => {
     if (!email) return;
 
     const loadStudios = async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/my-studios/${encodeURIComponent(email)}`,
-        { cache: "no-store" }
-      );
+      const res = await fetch("/api/studios/me", { cache: "no-store" });
       const data = res.ok ? await res.json() : [];
       setStudios(Array.isArray(data) ? data : []);
       setLoading(false);

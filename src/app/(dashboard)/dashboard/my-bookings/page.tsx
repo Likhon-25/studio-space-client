@@ -59,19 +59,10 @@ const MyBookingPage = () => {
     if (!email) return;
 
     const loadBookings = async () => {
-
-      const [bookingRes, studioRes] = await Promise.all([
-        fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios/booking/${encodeURIComponent(email)}`,
-          { cache: "no-store" }
-        ),
-        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`, { cache: "no-store" }),
-      ]);
-
-      const data = bookingRes.ok ? await bookingRes.json() : [];
-      const studioData = studioRes.ok ? await studioRes.json() : [];
-      setBookings(Array.isArray(data) ? data : []);
-      setStudios(Array.isArray(studioData) ? studioData : []);
+      const response = await fetch("/api/bookings/me", { cache: "no-store" });
+      const data = response.ok ? await response.json() : { bookings: [], studios: [] };
+      setBookings(Array.isArray(data.bookings) ? data.bookings : []);
+      setStudios(Array.isArray(data.studios) ? data.studios : []);
       setLoading(false);
     };
 

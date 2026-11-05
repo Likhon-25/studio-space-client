@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
+import { getAuthToken } from "@/lib/auth-token";
 
 async function getSessionUser() {
   const session = await auth.api.getSession({
@@ -28,6 +29,10 @@ export async function PATCH(
 
   const { id } = await params;
   const backendUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+  const token = await getAuthToken();
+  if (!token) {
+    return NextResponse.json({ message: "Authentication token could not be created" }, { status: 401 });
+  }
   const studio = await getStudio(backendUrl || "", id);
   const ownerEmail =
     studio?.ownerEmail || studio?.creatorEmail || studio?.hostEmail;
@@ -39,7 +44,10 @@ export async function PATCH(
   const body = await request.json();
   const response = await fetch(`${backendUrl}/all-studios/${id}`, {
     method: "PATCH",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
     body: JSON.stringify(body),
   });
 
@@ -57,6 +65,10 @@ export async function DELETE(
 
   const { id } = await params;
   const backendUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+  const token = await getAuthToken();
+  if (!token) {
+    return NextResponse.json({ message: "Authentication token could not be created" }, { status: 401 });
+  }
   const studio = await getStudio(backendUrl || "", id);
   const ownerEmail =
     studio?.ownerEmail || studio?.creatorEmail || studio?.hostEmail;
@@ -67,6 +79,7 @@ export async function DELETE(
 
   const response = await fetch(`${backendUrl}/all-studios/${id}`, {
     method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
   });
 
   return NextResponse.json(await response.json(), { status: response.status });

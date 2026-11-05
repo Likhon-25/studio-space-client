@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { Aperture, ArrowUpRight, MapPin } from "lucide-react";
+import StudioCategoryFilter from "@/components/StudioCategoryFilter";
 
 type Studio = {
   _id: string;
@@ -196,13 +197,14 @@ const StudiosEmpty = ({
   </div>
 );
 
-const AllStudios = async () => {
+const AllStudios = async ({ selectedCategory }: { selectedCategory?: string }) => {
   let studiosData: Studio[] = [];
   let failed = false;
 
   try {
     const studios = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`,
+      { cache: "no-store" }
     );
 
     if (studios.ok) {
@@ -233,6 +235,21 @@ const AllStudios = async () => {
     );
   }
 
+  if (selectedCategory) {
+    studiosData = studiosData.filter(
+      (studio) => studio.category?.trim().toLowerCase() === selectedCategory.toLowerCase()
+    );
+  }
+
+  if (selectedCategory && studiosData.length === 0) {
+    return (
+      <StudiosEmpty
+        title={`No ${selectedCategory} listings yet.`}
+        message="Try another category or browse all available creative spaces."
+      />
+    );
+  }
+
   return (
     <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
       {studiosData.map((studio: Studio) => (
@@ -242,8 +259,18 @@ const AllStudios = async () => {
   );
 };
 
-const StudiosPage = () => (
-  <div className="min-h-svh bg-[#F4EEE4] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+const StudiosPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string | string[] }>;
+}) => {
+  const params = await searchParams;
+  const selectedCategory = Array.isArray(params.category)
+    ? params.category[0]
+    : params.category;
+
+  return (
+    <div className="min-h-svh bg-[#F4EEE4] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
     <div className="mx-auto max-w-[1280px]">
       <div className="flex flex-col gap-6 border-b border-[#D8CFC0] pb-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
@@ -267,11 +294,14 @@ const StudiosPage = () => (
         </div>
       </div>
 
+      <StudioCategoryFilter selectedCategory={selectedCategory} />
+
       <Suspense fallback={<StudioSkeletons />}>
-        <AllStudios />
+        <AllStudios selectedCategory={selectedCategory} />
       </Suspense>
     </div>
-  </div>
-);
+    </div>
+  );
+};
 
 export default StudiosPage;

@@ -1,9 +1,11 @@
+import CategoriesSection from "@/components/Home/CategoriesSection";
 import HeroSection from "@/components/Home/HeroSection";
 
-export default function Home() {
-  return (
-    <div >
+const Home = () => (
+  <div>
     <HeroSection />
-    </div>
-  );
-}
+    <CategoriesSection />
+  </div>
+);
+
+export default Home;

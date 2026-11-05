@@ -83,12 +83,13 @@ const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
       return;
     }
 
+    const creatorEmail = user.email.trim().toLowerCase();
     const form = event.currentTarget;
     const formData = new FormData(form);
     const data = {
       ...Object.fromEntries(formData.entries()),
       creatorId: user.id,
-      creatorEmail: user.email,
+      creatorEmail,
       creatorName: user.name || "",
       creatorImage: user.image || "",
     };

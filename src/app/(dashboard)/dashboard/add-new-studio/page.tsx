@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -12,11 +14,11 @@ import {
 import { authClient } from "@/lib/auth-client";
 
 const categories = [
-  "Photo Studio",
-  "Film Stage",
-  "Podcast Lounge",
-  "Music Suite",
-  "Workshop",
+  "Photo Studios",
+  "Sound Stages",
+  "Podcast Rooms",
+  "Music Suites",
+  "Art Workshops",
 ];
 
 const amenities = [
@@ -50,16 +52,20 @@ const labelClass =
   const AddNewStudio = () => {
     const {data: session, isPending} = authClient.useSession()
     const user = session?.user;
+    const router = useRouter();
+    const [publishing, setPublishing] = useState(false);
 
-    console.log("Session user:", user, "Session loading:", isPending);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (isPending) {
-      throw new Error("Please wait while your account details load");
+      return;
     }
     if (!user) {
-      throw new Error("You must be logged in to publish a studio");
+      return;
     }
+    if (publishing) return;
+    setPublishing(true);
+
     const formData = new FormData(event.currentTarget);
     const data: Record<string, FormDataEntryValue | FormDataEntryValue[]> =
       Object.fromEntries(
@@ -73,19 +79,28 @@ const labelClass =
     data.creatorEmail = user.email;
     data.creatorName = user.name || "";
     data.creatorImage = user.image || "";
+    data.ownerEmail = user.email.trim().toLowerCase();
 
-    const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`,{
-      method: 'POST',
-      headers:{
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    if (!result.ok) {
-      throw new Error(`Failed to publish studio (${result.status})`);
+    try {
+      const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!result.ok) {
+        throw new Error(`Failed to publish studio (${result.status})`);
+      }
+
+      await result.json();
+      router.push("/dashboard/my-studio-listings");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      setPublishing(false);
     }
-    const createdStudio = await result.json();
-    console.log(createdStudio);
   }
 
   return (
@@ -365,9 +380,10 @@ const labelClass =
 
               <button
                 type="submit"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#D9542B] px-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F]"
+                disabled={publishing || isPending}
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#D9542B] px-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Publish studio
+                {publishing ? "Publishing..." : "Publish studio"}
                 <ArrowRight className="size-4" />
               </button>
             </div>

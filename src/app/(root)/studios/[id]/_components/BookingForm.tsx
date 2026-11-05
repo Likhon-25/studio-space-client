@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import {
   AlertCircle,
   ArrowRight,
@@ -43,6 +44,7 @@ const toMinutes = (value: string) => {
 
 const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
   const { data: session, isPending } = authClient.useSession();
+  const router = useRouter();
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -92,6 +94,7 @@ const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
       creatorEmail,
       creatorName: user.name || "",
       creatorImage: user.image || "",
+      status: "pending",
     };
 
     setStatus("loading");
@@ -140,6 +143,8 @@ const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
       form.reset();
       setStartTime("");
       setEndTime("");
+      router.push("/dashboard/my-bookings");
+      router.refresh();
     } catch (error) {
       setStatus("error");
       setFeedback(

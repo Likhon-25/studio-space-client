@@ -9,6 +9,7 @@ import {
   ChevronDown,
   Lock,
 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 const categories = [
   "Photo Studio",
@@ -45,14 +46,33 @@ const fieldClass =
 
 const labelClass =
   "mb-2 block font-mono text-[9px] uppercase tracking-[0.18em] text-[#5E574C]";
+
+  const AddNewStudio = () => {
+    const {data: session, isPending} = authClient.useSession()
+    const user = session?.user;
+
+    console.log("Session user:", user, "Session loading:", isPending);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isPending) {
+      throw new Error("Please wait while your account details load");
+    }
+    if (!user) {
+      throw new Error("You must be logged in to publish a studio");
+    }
     const formData = new FormData(event.currentTarget);
     const data: Record<string, FormDataEntryValue | FormDataEntryValue[]> =
       Object.fromEntries(
         [...formData.entries()].filter(([name]) => name !== "amenities")
       );
     data.amenities = formData.getAll("amenities").map(String);
+    data.hostId = user.id;
+    data.hostName = user.name || "";
+    data.hostEmail = user.email;
+    data.hostImage = user.image || "";
+    data.creatorEmail = user.email;
+    data.creatorName = user.name || "";
+    data.creatorImage = user.image || "";
 
     const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`,{
       method: 'POST',
@@ -64,10 +84,10 @@ const labelClass =
     if (!result.ok) {
       throw new Error(`Failed to publish studio (${result.status})`);
     }
-    const studios = await result.json();
-    console.log(studios);
+    const createdStudio = await result.json();
+    console.log(createdStudio);
   }
-const AddNewStudio = () => {
+
   return (
     <div className="min-h-svh bg-[#F4EEE4] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div className="mx-auto max-w-6xl">
@@ -311,7 +331,8 @@ const AddNewStudio = () => {
                     </label>
                     <input
                       id="hostName"
-                      value="Maya Chen"
+                      name="hostName"
+                      value={isPending ? "Loading..." : user?.name || ""}
                       readOnly
                       aria-readonly="true"
                       className={`${fieldClass} cursor-not-allowed bg-[#EFE7DA] text-[#6B6357] focus:border-[#D8CFC0] focus:ring-0`}
@@ -323,7 +344,8 @@ const AddNewStudio = () => {
                     </label>
                     <input
                       id="hostEmail"
-                      value="maya@studios.co"
+                      name="hostEmail"
+                      value={isPending ? "Loading..." : user?.email || ""}
                       readOnly
                       aria-readonly="true"
                       className={`${fieldClass} cursor-not-allowed bg-[#EFE7DA] text-[#6B6357] focus:border-[#D8CFC0] focus:ring-0`}

@@ -40,8 +40,8 @@ const Sidebar = () => {
     <>
       <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-[#D8CFC0] bg-[#F4EEE4]/95 px-4 backdrop-blur-md lg:hidden">
         <Link
-          href="/dashboard"
-          aria-label="StudioSpace dashboard"
+          href="/"
+          aria-label="StudioSpace home"
           className="flex items-center gap-2"
         >
           <span className="flex size-8 items-center justify-center rounded-full bg-[#191713] text-[#E3A867]">
@@ -85,8 +85,8 @@ const Sidebar = () => {
           }`}
         >
           <Link
-            href="/dashboard"
-            aria-label="StudioSpace dashboard"
+            href="/"
+            aria-label="StudioSpace home"
             className="flex items-center gap-2.5"
           >
             <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#F4EEE4] text-[#191713]">

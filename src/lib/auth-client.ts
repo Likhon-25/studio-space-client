@@ -1,12 +1,10 @@
 import { createAuthClient } from "better-auth/react";
-import { jwtClient } from "better-auth/client/plugins"
+import { jwtClient } from "better-auth/client/plugins";
 
-export const authClient = createAuthClient(
-    {baseURL : process.env.NEXT_PUBLIC_SERVER_URL || "https://localhost:5000",
-          plugins: [
-    jwtClient() 
-  ]
-    }
-);
+export const authClient = createAuthClient({
+//   baseURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:5000",
+//   baseURL: "http://localhost:3000",
+  plugins: [jwtClient()],
+});
 
 export const { signIn, signUp, signOut, useSession } = authClient;

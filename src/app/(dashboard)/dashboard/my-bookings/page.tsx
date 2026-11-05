@@ -59,6 +59,7 @@ const MyBookingPage = () => {
     if (!email) return;
 
     const loadBookings = async () => {
+
       const [bookingRes, studioRes] = await Promise.all([
         fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios/booking/${encodeURIComponent(email)}`,
@@ -94,7 +95,7 @@ const MyBookingPage = () => {
     setCancelling(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios/booking/${cancelBooking._id}/cancel`,
+        `/api/bookings/${cancelBooking._id}/cancel`,
         { method: "PATCH" }
       );
       if (!res.ok) throw new Error("Cancellation failed");

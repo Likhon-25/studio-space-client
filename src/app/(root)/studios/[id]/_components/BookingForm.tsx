@@ -102,7 +102,7 @@ const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
 
     try {
       const result = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios/booking`,
+        "/api/bookings",
         {
           method: "POST",
           headers: {

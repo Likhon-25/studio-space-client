@@ -8,7 +8,6 @@ import {
   ShieldCheck,
   Star,
 } from "lucide-react";
-
 type Review = {
   _id?: string;
   name?: string;
@@ -34,7 +33,6 @@ type Studio = {
   reviews?: Review[];
 };
 
-
 const amenityList = (amenities: Studio["amenities"]) => {
   if (Array.isArray(amenities)) return amenities.filter(Boolean);
   if (typeof amenities === "string") {
@@ -53,7 +51,8 @@ const StudioDetails = async ({ params }: { params: { id: string } }) => {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios/${id}`
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios/${id}`,
+      { cache: "no-store" }
     );
 
     if (response.ok) {

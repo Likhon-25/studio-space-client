@@ -82,10 +82,12 @@ const MyStudioListings = () => {
     setSaving(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios/${editStudio._id}`,
+        `/api/studios/${editStudio._id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(updateData),
         }
       );
@@ -110,7 +112,7 @@ const MyStudioListings = () => {
     setDeleting(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios/${deleteStudio._id}`,
+        `/api/studios/${deleteStudio._id}`,
         { method: "DELETE" }
       );
       if (!res.ok) throw new Error("Delete failed");

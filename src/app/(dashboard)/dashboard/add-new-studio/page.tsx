@@ -82,7 +82,7 @@ const labelClass =
     data.ownerEmail = user.email.trim().toLowerCase();
 
     try {
-      const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/all-studios`, {
+      const result = await fetch("/api/studios", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

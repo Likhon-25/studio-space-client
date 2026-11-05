@@ -10,6 +10,7 @@ import {
   Loader2,
   ShieldCheck,
 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 type BookingFormProps = {
   studioId: string;
@@ -41,10 +42,12 @@ const toMinutes = (value: string) => {
 };
 
 const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
+  const { data: session, isPending } = authClient.useSession();
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [feedback, setFeedback] = useState("");
+  const user = session?.user;
 
   const hourlyRate = Number.isFinite(Number(rate)) ? Number(rate) : 0;
   const securityDeposit = Number.isFinite(Number(deposit))
@@ -68,9 +71,27 @@ const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (isPending) {
+      setStatus("error");
+      setFeedback("Please wait while your account details load.");
+      return;
+    }
+
+    if (!user?.email) {
+      setStatus("error");
+      setFeedback("Please log in before confirming a booking.");
+      return;
+    }
+
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+    const data = {
+      ...Object.fromEntries(formData.entries()),
+      creatorId: user.id,
+      creatorEmail: user.email,
+      creatorName: user.name || "",
+      creatorImage: user.image || "",
+    };
 
     setStatus("loading");
     setFeedback("");

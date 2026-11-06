@@ -5,9 +5,13 @@ import { jwt } from "better-auth/plugins";
 
 const client = new MongoClient(process.env.MONGODB_URI as string);
 const db = client.db("studio-space");
+const frontendUrl = (
+  process.env.BETTER_AUTH_URL || "http://localhost:3000"
+).trim().replace(/\/+$/, "");
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL,
+  baseURL: frontendUrl,
+  trustedOrigins: [frontendUrl],
   secret: process.env.BETTER_AUTH_SECRET,
   database: mongodbAdapter(db, {
     client,
@@ -21,7 +25,15 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
   },
-  plugins: [jwt({ sessionCookieCache: true })],
+  plugins: [
+    jwt({
+      sessionCookieCache: true,
+      jwt: {
+        issuer: frontendUrl,
+        audience: frontendUrl,
+      },
+    }),
+  ],
   session: {
     cookieCache: {
       enabled: true,

@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import BookingPanel from "./_components/BookingPanel";
+import { auth } from "@/lib/auth";
 import {
   Aperture,
   ArrowLeft,
@@ -46,6 +49,13 @@ const amenityList = (amenities: Studio["amenities"]) => {
 
 const StudioDetails = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    redirect(`/login?callbackUrl=${encodeURIComponent(`/studios/${id}`)}`);
+  }
 
   let studio: Studio | null = null;
 

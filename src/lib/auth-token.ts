@@ -7,7 +7,8 @@ export async function getAuthToken(): Promise<string | null> {
       headers: await headers(),
     });
     return result?.token || null;
-  } catch {
+  } catch (error) {
+    console.error("Authentication token generation failed:", error);
     return null;
   }
 }

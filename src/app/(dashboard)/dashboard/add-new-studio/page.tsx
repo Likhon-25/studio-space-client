@@ -92,7 +92,19 @@ const labelClass =
       });
 
       if (!result.ok) {
-        throw new Error(`Failed to publish studio (${result.status})`);
+        const responseText = await result.text();
+        let message = `Failed to publish studio (${result.status})`;
+
+        if (responseText) {
+          try {
+            const responseData = JSON.parse(responseText) as { message?: string };
+            if (responseData.message) message = responseData.message;
+          } catch {
+            message = responseText.slice(0, 200);
+          }
+        }
+
+        throw new Error(message);
       }
 
       await result.json();
@@ -106,7 +118,10 @@ const labelClass =
       console.error(error);
       toast.add({
         title: "Publish failed",
-        description: "We could not publish your studio. Please try again.",
+        description:
+          error instanceof Error
+            ? error.message
+            : "We could not publish your studio. Please try again.",
         type: "error",
       });
       setPublishing(false);

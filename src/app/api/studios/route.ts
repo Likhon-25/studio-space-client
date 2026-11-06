@@ -9,7 +9,10 @@ export async function POST(request: Request) {
   });
 
   if (!session?.user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { message: "Please log in again. Your login session is no longer active." },
+      { status: 401 }
+    );
   }
 
   const body = await request.json();
@@ -34,6 +37,7 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+
   const token = await getAuthToken();
   if (!token) {
     return NextResponse.json(
@@ -42,18 +46,26 @@ export async function POST(request: Request) {
     );
   }
 
-  const response = await fetch(`${backendUrl}/all-studios`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(studioData),
-  });
+  try {
+    const response = await fetch(`${backendUrl}/all-studios`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(studioData),
+    });
 
-  const data = await response.text();
-  return new NextResponse(data, {
-    status: response.status,
-    headers: { "Content-Type": response.headers.get("content-type") || "application/json" },
-  });
+    const data = await response.text();
+    return new NextResponse(data, {
+      status: response.status,
+      headers: { "Content-Type": response.headers.get("content-type") || "application/json" },
+    });
+  } catch (error) {
+    console.error("Studio backend request failed:", error);
+    return NextResponse.json(
+      { message: "Studio service is unavailable. Please try again in a moment." },
+      { status: 503 }
+    );
+  }
 }

@@ -101,9 +101,9 @@ const BookingForm = ({ studioId, rate, deposit }: BookingFormProps) => {
     setStatus("loading");
     setFeedback("");
 
-    try {
-      const result = await fetch(
-        "/api/bookings",
+    try { 
+      // const result = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/bookings`,
+      const result = await fetch(`/api/bookings`,
         {
           method: "POST",
           headers: {

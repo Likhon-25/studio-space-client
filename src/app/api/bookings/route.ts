@@ -9,7 +9,10 @@ export async function POST(request: Request) {
   });
 
   if (!session?.user) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { message: "Please log in again. Your login session is no longer active." },
+      { status: 401 }
+    );
   }
 
   const body = await request.json();

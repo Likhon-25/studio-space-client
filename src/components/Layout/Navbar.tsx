@@ -20,7 +20,7 @@ import ThemeToggle from "@/components/theme/ThemeToggle";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Explore Studios", href: "/studios" },
-  { label: "How It Works", href: "/how-it-works" },
+  { label: "How It Works", href: "/#how-booking-works" },
   { label: "About Us", href: "/about" },
 ];
 
@@ -49,7 +49,9 @@ export const Navbar = () => {
     "U";
 
   const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
+    href === "/" ? pathname === "/" : href.includes("#")
+      ? false
+      : pathname === href || pathname.startsWith(`${href}/`);
 
   const closeMenus = () => {
     setUserMenuOpen(false);

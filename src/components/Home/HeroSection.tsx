@@ -109,7 +109,7 @@ const HeroSection = () => {
                   Explore Studios
                 </Link>
                 <Link
-                  href="/add-studio"
+                  href="/dashboard/add-new-studio"
                   className={`${ctaBase} border border-white/30 text-[#F4EEE4] hover:border-[#F4EEE4] hover:bg-[#F4EEE4] hover:text-[#191713]`}
                 >
                   Host Your Space

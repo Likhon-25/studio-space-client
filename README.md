@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 Studio Space
 
-## Getting Started
+### Peer-to-Peer Creative Workspace & Production Studio Sharing Platform
 
-First, run the development server:
+**Live Website:** https://studio-space-frontend-ten.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Studio Space is a secure and user-friendly platform where users can discover, explore, and book creative studios and production spaces. Studio owners can also list their own spaces and manage their bookings through a personalized dashboard.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Studio Discovery:** Explore various creative studios and production spaces.
+- **Category-Based Filtering:** Find preferred studios easily using category filters.
+- **Studio Details:** View detailed information about each studio before booking.
+- **Studio Booking:** Book suitable studios for creative projects and production needs.
+- **Add Your Studio:** Users can list and share their own studio spaces.
+- **User Dashboard:** Manage bookings and studio listings from one place.
+- **My Bookings:** View and track all studios booked by the user.
+- **My Listings:** View and manage studios added by the user.
+- **Secure Authentication:** User authentication and session management with Better Auth.
+- **Protected Routes:** Restrict access to authorized users.
+- **Responsive Design:** Enjoy a smooth experience across desktop, tablet, and mobile devices.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧰 Technology Stack
 
-## Learn More
+### Frontend
+- Next.js
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Better Auth
 
-To learn more about Next.js, take a look at the following resources:
+### Backend
+- Node.js
+- Express.js
+- JavaScript
+- MongoDB
+- JWT (JSON Web Token)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Future Feature Plans
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Advanced Search:** Search studios by name and keywords.
+- **Location-Based Filtering:** Find studios based on location.
+- **Price Filtering:** Filter studios according to budget.
+- **Availability Calendar:** Check available dates and booking time slots.
+- **Reviews & Ratings:** Allow users to rate and review studios.
+- **Booking Notifications:** Notify users about booking updates.
+- **Enhanced Booking Management:** Improve booking status tracking and history.
+- **Advanced Security:** Further improve API security and data protection.
 
-## Deploy on Vercel
+## 🔑 Examiner Test Credentials
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Credential | Value |
+|---|---|
+| Email | YOUR_TEST_EMAIL |
+| Password | YOUR_TEST_PASSWORD |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Note:** Replace the placeholders with your dedicated examiner demo account credentials.
+
+## 🌐 Live Demo
+
+[Visit Studio Space](https://studio-space-frontend-ten.vercel.app/)
+
+---
+
+**Studio Space – Discover, Share & Book Creative Spaces.**

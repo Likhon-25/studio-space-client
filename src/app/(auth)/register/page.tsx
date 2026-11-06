@@ -12,13 +12,14 @@ import {
   Check,
   Circle,
 } from "lucide-react";
-import { signUp } from "@/lib/auth-client";
+import { authClient, signUp } from "@/lib/auth-client";
+import { toast } from "@/components/ui/toast";
 
 const labelClass =
-  "font-mono text-[9px] uppercase tracking-[0.18em] text-[#6B6357]";
+  "font-mono text-[9px] uppercase tracking-[0.18em] text-body-2";
 
 const inputClass =
-  "mt-2 h-12 w-full rounded-xl border border-[#D8CFC0] bg-[#F4EEE4] px-3.5 text-base text-[#191713] outline-none transition-colors placeholder:text-[#9B9184] focus:border-[#D9542B] focus:ring-2 focus:ring-[#D9542B]/10 sm:text-sm";
+  "mt-2 h-12 w-full rounded-xl border border-line bg-elevated px-3.5 text-base text-ink outline-none transition-colors placeholder:text-placeholder focus:border-brand focus:ring-2 focus:ring-brand/10 sm:text-sm";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const photoUrlPattern = /^https?:\/\/\S+$/i;
@@ -95,15 +96,42 @@ const RegisterPage = () => {
 
     if (signUpError) {
       setError(signUpError.message || "We could not create your account.");
+      toast.add({
+        title: "Registration failed",
+        description:
+          signUpError.message || "We could not create your account.",
+        type: "error",
+      });
       return;
     }
 
+    toast.add({
+      title: "Account created",
+      description: "Welcome to StudioSpace.",
+    });
     router.replace("/");
     router.refresh();
   };
 
+    const handleGoogleSignUp = async () => {
+      const data = await authClient.signIn.social({
+        provider: "google",
+      });
+
+      if (data?.error) {
+        console.error(data.error);
+        toast.add({
+          title: "Google registration failed",
+          description:
+            data.error.message ||
+            "Could not start Google sign-up. Please try again.",
+          type: "error",
+        });
+      }
+    };
+
   return (
-    <div className="min-h-svh bg-[#F4EEE4] lg:grid lg:grid-cols-[1.05fr_1fr]">
+    <div className="min-h-svh bg-canvas lg:grid lg:grid-cols-[1.05fr_1fr]">
       <aside className="relative hidden overflow-hidden bg-[#191713] lg:block">
         <div
           aria-hidden="true"
@@ -124,7 +152,7 @@ const RegisterPage = () => {
             aria-label="StudioSpace home"
             className="inline-flex w-fit items-center gap-2.5"
           >
-            <span className="flex size-9 items-center justify-center rounded-full bg-[#E3A867] text-[#191713]">
+            <span className="flex size-9 items-center justify-center rounded-full bg-[#E3A867] text-ink">
               <Aperture className="size-[19px]" strokeWidth={1.6} />
             </span>
             <span className="font-serif text-[1.45rem] leading-none tracking-[-0.02em] text-[#F4EEE4]">
@@ -177,14 +205,14 @@ const RegisterPage = () => {
             <span className="flex size-8 items-center justify-center rounded-full bg-[#191713] text-[#E3A867]">
               <Aperture className="size-[17px]" strokeWidth={1.6} />
             </span>
-            <span className="font-serif text-xl leading-none tracking-[-0.02em] text-[#191713]">
+            <span className="font-serif text-xl leading-none tracking-[-0.02em] text-ink">
               Studio<span className="italic">Space</span>
             </span>
           </Link>
 
           <Link
             href="/"
-            className="ml-auto inline-flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-[#8A8173] transition-colors hover:text-[#D9542B]"
+            className="ml-auto inline-flex items-center gap-1.5 font-mono text-[8px] uppercase tracking-[0.16em] text-faint transition-colors hover:text-brand"
           >
             <ArrowLeft className="size-3.5" />
             Back to home
@@ -194,28 +222,29 @@ const RegisterPage = () => {
         <div className="flex flex-1 items-center justify-center px-4 py-8 sm:px-8">
           <section
             aria-labelledby="register-heading"
-            className="w-full max-w-[460px] rounded-2xl border border-[#D8CFC0] bg-[#FBF8F2] p-6 shadow-[0_30px_80px_-50px_rgba(25,23,19,0.55)] sm:p-8"
+            className="w-full max-w-[460px] rounded-2xl border border-line bg-surface p-6 shadow-[0_30px_80px_-50px_rgba(25,23,19,0.55)] sm:p-8"
           >
             <div className="flex items-center gap-2">
-              <span className="h-px w-8 bg-[#D9542B]" />
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#D9542B]">
+              <span className="h-px w-8 bg-brand" />
+              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-brand">
                 New member / 02
               </p>
             </div>
 
             <h1
               id="register-heading"
-              className="mt-4 font-serif text-4xl leading-none tracking-[-0.02em] text-[#191713] sm:text-5xl"
+              className="mt-4 font-serif text-4xl leading-none tracking-[-0.02em] text-ink sm:text-5xl"
             >
               Create an account.
             </h1>
-            <p className="mt-3 text-sm leading-relaxed text-[#6B6357]">
+            <p className="mt-3 text-sm leading-relaxed text-muted">
               Join StudioSpace to book spaces and list your own studio.
             </p>
 
             <button
+            onClick={handleGoogleSignUp}
               type="button"
-              className="mt-7 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-[#D8CFC0] bg-[#F4EEE4] text-[11px] font-semibold uppercase tracking-[0.14em] text-[#191713] transition-colors hover:border-[#B9AE9C] hover:bg-[#EEE5D8] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F2]"
+              className="mt-7 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-line bg-canvas text-[11px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:border-line-strong hover:bg-elevated-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
             >
               <svg
                 aria-hidden="true"
@@ -244,11 +273,11 @@ const RegisterPage = () => {
             </button>
 
             <div className="my-6 flex items-center gap-3">
-              <span className="h-px flex-1 bg-[#D8CFC0]" />
-              <span className="shrink-0 font-mono text-[8px] uppercase tracking-[0.16em] text-[#9B9184]">
+              <span className="h-px flex-1 bg-line" />
+              <span className="shrink-0 font-mono text-[8px] uppercase tracking-[0.16em] text-placeholder">
                 Or register with email
               </span>
-              <span className="h-px flex-1 bg-[#D8CFC0]" />
+              <span className="h-px flex-1 bg-line" />
             </div>
 
             <form onSubmit={handleSubmit} noValidate className="space-y-4">
@@ -291,7 +320,7 @@ const RegisterPage = () => {
               <div>
                 <label htmlFor="photoUrl" className={labelClass}>
                   Photo URL{" "}
-                  <span className="normal-case tracking-normal text-[#9B9184]">
+                  <span className="normal-case tracking-normal text-placeholder">
                     (optional)
                   </span>
                 </label>
@@ -338,10 +367,10 @@ const RegisterPage = () => {
                       key={rule.label}
                       className={`flex items-center gap-1.5 text-[10px] transition-colors ${
                         rule.valid
-                          ? "text-[#2F6B4F]"
+                          ? "text-success-text"
                           : password
-                            ? "text-[#B8431F]"
-                            : "text-[#8A8173]"
+                            ? "text-brand-strong"
+                            : "text-faint"
                       }`}
                     >
                       {rule.valid ? (
@@ -359,7 +388,7 @@ const RegisterPage = () => {
                 <p
                   id="register-error"
                   role="alert"
-                  className="flex items-start gap-2 rounded-xl border border-[#E8C6B9] bg-[#FBEDE7] p-3 text-[11px] leading-relaxed text-[#9D3F22]"
+                  className="flex items-start gap-2 rounded-xl border border-danger-line bg-danger-soft p-3 text-[11px] leading-relaxed text-danger-text"
                 >
                   <AlertCircle className="mt-0.5 size-3.5 shrink-0" />
                   {error}
@@ -369,18 +398,18 @@ const RegisterPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[#D9542B] text-[11px] font-semibold uppercase tracking-[0.16em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FBF8F2] disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-full bg-brand text-[11px] font-semibold uppercase tracking-[0.16em] text-[#FBF8F2] transition-colors hover:bg-brand-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-surface disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? "Creating account..." : "Register"}
                 <ArrowRight className="size-4" />
               </button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-[#6B6357]">
+            <p className="mt-6 text-center text-sm text-muted">
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-semibold text-[#D9542B] underline-offset-4 transition-colors hover:text-[#B8431F] hover:underline"
+                className="font-semibold text-brand underline-offset-4 transition-colors hover:text-brand-strong hover:underline"
               >
                 Login
               </Link>
@@ -388,7 +417,7 @@ const RegisterPage = () => {
           </section>
         </div>
 
-        <footer className="px-4 pb-6 text-center font-mono text-[8px] uppercase tracking-[0.16em] text-[#9B9184]">
+        <footer className="px-4 pb-6 text-center font-mono text-[8px] uppercase tracking-[0.16em] text-placeholder">
           StudioSpace / Creative spaces, on call.
         </footer>
       </section>

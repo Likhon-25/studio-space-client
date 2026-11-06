@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { signOut, useSession } from "@/lib/auth-client";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -67,7 +68,7 @@ export const Navbar = () => {
       role="img"
       aria-label={user.name ? `${user.name} profile photo` : "Profile photo"}
       style={{ backgroundImage: `url("${user.image}")` }}
-      className="size-9 shrink-0 rounded-full border border-[#D8CFC0] bg-cover bg-center"
+      className="size-9 shrink-0 rounded-full border border-line bg-cover bg-center"
     />
   ) : (
     <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#191713] text-[11px] font-semibold uppercase text-[#E3A867]">
@@ -76,7 +77,7 @@ export const Navbar = () => {
   );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#D8CFC0]/80 bg-[#F4EEE4]/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-line/80 bg-canvas/95 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between gap-3 px-3 sm:px-6 lg:h-20 lg:px-8">
         <Link
           href="/"
@@ -86,7 +87,7 @@ export const Navbar = () => {
           <span className="flex size-9 items-center justify-center rounded-full bg-[#191713] text-[#E3A867]">
             <Aperture className="size-[19px]" strokeWidth={1.6} />
           </span>
-          <span className="hidden font-serif text-[1.45rem] leading-none tracking-[-0.02em] text-[#191713] sm:inline">
+          <span className="hidden font-serif text-[1.45rem] leading-none tracking-[-0.02em] text-ink sm:inline">
             Studio<span className="italic">Space</span>
           </span>
         </Link>
@@ -106,14 +107,14 @@ export const Navbar = () => {
                 aria-current={active ? "page" : undefined}
                 className={`relative text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors ${
                   active
-                    ? "text-[#191713]"
-                    : "text-[#6B6357] hover:text-[#191713]"
+                    ? "text-ink"
+                    : "text-muted hover:text-ink"
                 }`}
               >
                 {link.label}
                 <span
                   aria-hidden="true"
-                  className={`absolute -bottom-2 left-1/2 h-[2px] w-4 -translate-x-1/2 rounded-full bg-[#D9542B] transition-opacity ${
+                  className={`absolute -bottom-2 left-1/2 h-[2px] w-4 -translate-x-1/2 rounded-full bg-brand transition-opacity ${
                     active ? "opacity-100" : "opacity-0"
                   }`}
                 />
@@ -123,10 +124,12 @@ export const Navbar = () => {
         </nav>
 
         <div className="flex items-center gap-1.5 sm:gap-2.5">
+          <ThemeToggle className="flex size-9 shrink-0 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:border-line-strong" />
+
           {isPending ? (
             <span
               aria-label="Loading account"
-              className="h-9 w-[138px] animate-pulse rounded-full bg-[#D8CFC0]/60 sm:w-[150px]"
+              className="h-9 w-[138px] animate-pulse rounded-full bg-line/60 sm:w-[150px]"
             />
           ) : user ? (
             <div
@@ -143,14 +146,14 @@ export const Navbar = () => {
                 aria-haspopup="menu"
                 aria-controls="account-menu"
                 aria-label="Open account menu"
-                className="flex items-center gap-1.5 rounded-full border border-[#191713]/10 bg-[#FBF8F2] p-0.5 pr-2 transition-colors hover:border-[#B9AE9C] sm:gap-2 sm:pr-2.5"
+                className="flex items-center gap-1.5 rounded-full border border-ink/10 bg-surface p-0.5 pr-2 transition-colors hover:border-line-strong sm:gap-2 sm:pr-2.5"
               >
                 {avatar}
-                <span className="max-w-[88px] truncate text-[10px] font-semibold uppercase tracking-[0.08em] text-[#191713] sm:max-w-[140px] sm:text-[11px] sm:tracking-[0.12em]">
+                <span className="max-w-[88px] truncate text-[10px] font-semibold uppercase tracking-[0.08em] text-ink sm:max-w-[140px] sm:text-[11px] sm:tracking-[0.12em]">
                   {user.name || "Account"}
                 </span>
                 <ChevronDown
-                  className={`size-3.5 shrink-0 text-[#8A8173] transition-transform lg:group-hover:rotate-180 ${
+                  className={`size-3.5 shrink-0 text-faint transition-transform lg:group-hover:rotate-180 ${
                     userMenuOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -166,14 +169,14 @@ export const Navbar = () => {
                     : "pointer-events-none invisible -translate-y-1 opacity-0"
                 } lg:group-hover:pointer-events-auto lg:group-hover:visible lg:group-hover:translate-y-0 lg:group-hover:opacity-100`}
               >
-                <div className="rounded-2xl border border-[#D8CFC0] bg-[#FBF8F2] p-1.5 shadow-[0_24px_60px_-20px_rgba(25,23,19,0.4)]">
-                  <div className="flex items-center gap-3 rounded-xl bg-[#F4EEE4] p-3">
+                <div className="rounded-2xl border border-line bg-surface p-1.5 shadow-[0_24px_60px_-20px_rgba(25,23,19,0.4)]">
+                  <div className="flex items-center gap-3 rounded-xl bg-canvas p-3">
                     {avatar}
                     <div className="min-w-0">
-                      <p className="truncate text-[12px] font-semibold text-[#191713]">
+                      <p className="truncate text-[12px] font-semibold text-ink">
                         {user.name || "Account"}
                       </p>
-                      <p className="truncate text-[10px] text-[#8A8173]">
+                      <p className="truncate text-[10px] text-faint">
                         {user.email}
                       </p>
                     </div>
@@ -193,31 +196,31 @@ export const Navbar = () => {
                           aria-current={active ? "page" : undefined}
                           className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-[12px] font-medium transition-colors ${
                             active
-                              ? "bg-[#F4EEE4] text-[#191713]"
-                              : "text-[#5E574C] hover:bg-[#F4EEE4] hover:text-[#191713]"
+                              ? "bg-canvas text-ink"
+                              : "text-body-2 hover:bg-canvas hover:text-ink"
                           }`}
                         >
                           <Icon
                             className={`size-4 shrink-0 ${
-                              active ? "text-[#D9542B]" : "text-[#8A8173]"
+                              active ? "text-brand" : "text-faint"
                             }`}
                             strokeWidth={1.8}
                           />
                           <span className="truncate">{link.label}</span>
                           {active && (
-                            <span className="ml-auto size-1.5 shrink-0 rounded-full bg-[#D9542B]" />
+                            <span className="ml-auto size-1.5 shrink-0 rounded-full bg-brand" />
                           )}
                         </Link>
                       );
                     })}
                   </div>
 
-                  <div className="mt-1.5 border-t border-[#E4DACC] pt-1.5">
+                  <div className="mt-1.5 border-t border-line-soft pt-1.5">
                     <button
                       type="button"
                       role="menuitem"
                       onClick={handleLogout}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[12px] font-medium text-[#B8431F] transition-colors hover:bg-[#FBEDE7]"
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[12px] font-medium text-brand-strong transition-colors hover:bg-danger-soft"
                     >
                       <LogOut className="size-4 shrink-0" strokeWidth={1.8} />
                       Logout
@@ -230,13 +233,13 @@ export const Navbar = () => {
             <div className="flex items-center gap-1.5 sm:gap-2">
               <Link
                 href="/login"
-                className="inline-flex h-9 items-center justify-center rounded-full px-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#191713] transition-colors hover:bg-[#191713]/5 sm:px-4 sm:text-[11px]"
+                className="inline-flex h-9 items-center justify-center rounded-full px-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:bg-ink/5 sm:px-4 sm:text-[11px]"
               >
                 Login
               </Link>
               <Link
                 href="/register"
-                className="inline-flex h-9 items-center justify-center rounded-full bg-[#D9542B] px-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F] sm:px-4 sm:text-[11px]"
+                className="inline-flex h-9 items-center justify-center rounded-full bg-brand px-2.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FBF8F2] transition-colors hover:bg-brand-strong sm:px-4 sm:text-[11px]"
               >
                 Sign Up
               </Link>
@@ -252,7 +255,7 @@ export const Navbar = () => {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            className="flex size-9 items-center justify-center rounded-full border border-[#191713]/15 text-[#191713] transition-colors hover:bg-[#191713] hover:text-[#F4EEE4] lg:hidden"
+            className="flex size-9 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:bg-panel hover:text-cream lg:hidden"
           >
             {mobileOpen ? (
               <X className="size-[18px]" strokeWidth={1.8} />
@@ -266,7 +269,7 @@ export const Navbar = () => {
       {mobileOpen && (
         <div
           id="mobile-menu"
-          className="border-t border-[#D8CFC0] bg-[#F4EEE4] lg:hidden"
+          className="border-t border-line bg-canvas lg:hidden"
         >
           <nav
             aria-label="Mobile navigation"
@@ -283,13 +286,13 @@ export const Navbar = () => {
                   aria-current={active ? "page" : undefined}
                   className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors ${
                     active
-                      ? "bg-[#FBF8F2] text-[#191713]"
-                      : "text-[#6B6357] hover:bg-[#FBF8F2] hover:text-[#191713]"
+                      ? "bg-surface text-ink"
+                      : "text-muted hover:bg-surface hover:text-ink"
                   }`}
                 >
                   {link.label}
                   {active && (
-                    <span className="size-1.5 rounded-full bg-[#D9542B]" />
+                    <span className="size-1.5 rounded-full bg-brand" />
                   )}
                 </Link>
               );

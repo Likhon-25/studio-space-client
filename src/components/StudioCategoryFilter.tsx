@@ -76,19 +76,19 @@ const StudioCategoryFilter = ({
             key={pill.name}
             href={pill.href}
             aria-current={isActive ? "page" : undefined}
-            className={`inline-flex h-9 items-center gap-2 whitespace-nowrap rounded-full border px-4 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4EEE4] sm:h-10 sm:px-5 ${
+            className={`inline-flex h-9 items-center gap-2 whitespace-nowrap rounded-full border px-4 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-canvas sm:h-10 sm:px-5 ${
               isActive
-                ? "border-[#D9542B] bg-[#D9542B] text-[#F4EEE4]"
-                : "border-[#D8CFC0] bg-[#FBF8F2] text-[#5E574C] hover:border-[#191713]/60 hover:text-[#191713]"
-                // ? "border-[#191713] bg-[#191713] text-[#F4EEE4]"
-                // : "border-[#D8CFC0] bg-[#FBF8F2] text-[#5E574C] hover:border-[#D9542B]/60 hover:text-[#191713]"
+                ? "border-brand bg-brand text-cream"
+                : "border-line bg-surface text-body-2 hover:border-ink/60 hover:text-ink"
+                // ? "border-panel text-cream"
+                // : "border-line bg-surface text-body-2 hover:border-brand/60 hover:text-ink"
             }`}
           >
             <Icon
               className={`size-3.5 shrink-0 transition-colors ${
                 isActive
                   ? "text-[#191713]"
-                  : "text-[#8A8173] group-hover:text-[#D9542B]"
+                  : "text-faint group-hover:text-brand"
               }`}
             />
             {pill.name}

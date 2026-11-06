@@ -14,6 +14,7 @@ import {
   Plus,
   X,
 } from "lucide-react";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 
 
 const navLinks = [
@@ -38,7 +39,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-[#D8CFC0] bg-[#F4EEE4]/95 px-4 backdrop-blur-md lg:hidden">
+      <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-line bg-canvas/95 px-4 backdrop-blur-md lg:hidden">
         <Link
           href="/"
           aria-label="StudioSpace home"
@@ -52,14 +53,17 @@ const Sidebar = () => {
           </span>
         </Link>
 
-        <button
-          type="button"
-          onClick={() => setMobileOpen(true)}
-          aria-label="Open dashboard menu"
-          className="flex size-9 items-center justify-center rounded-full border border-[#191713]/15 text-[#191713] transition-colors hover:bg-[#191713] hover:text-[#F4EEE4]"
-        >
-          <Menu className="size-[18px]" strokeWidth={1.8} />
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle className="flex size-9 shrink-0 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:border-line-strong" />
+          <button
+            type="button"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open dashboard menu"
+            className="flex size-9 items-center justify-center rounded-full border border-ink/15 text-ink transition-colors hover:bg-panel hover:text-cream"
+          >
+            <Menu className="size-[18px]" strokeWidth={1.8} />
+          </button>
+        </div>
       </header>
 
       {mobileOpen && (
@@ -170,11 +174,17 @@ const Sidebar = () => {
         <div className="relative shrink-0 border-t border-white/10 p-3">
           <div
             className={`flex items-center gap-3 rounded-xl px-2 py-2 ${
-              collapsed ? "lg:justify-center lg:px-0" : ""
+              collapsed ? "justify-center px-0 lg:justify-center lg:px-0" : ""
             }`}
           >
-          
-            
+            <ThemeToggle className="flex size-9 shrink-0 items-center justify-center rounded-full border border-white/15 text-cream-muted transition-colors hover:bg-white/10 hover:text-cream" />
+            <span
+              className={`font-mono text-[9px] uppercase tracking-[0.16em] text-faint ${
+                collapsed ? "hidden" : ""
+              }`}
+            >
+              Theme
+            </span>
           </div>
 
           <button

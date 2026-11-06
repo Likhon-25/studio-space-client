@@ -2,3 +2,140 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------------------------------------------------------------------------
+   Theme tokens.
+   Light values are the original hand-picked palette; dark values re-interpret
+   the same visual identity on an ink canvas. Surfaces that are intentionally
+   dark in both themes (hero, sidebar, image overlays) stay hard-coded.
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  --canvas: #f4eee4;
+  --surface: #fbf8f2;
+  --elevated: #f4eee4;
+  --elevated-strong: #eee5d8;
+  --elevated-muted: #efe7da;
+  --panel: #191713;
+  --cream: #f4eee4;
+  --cream-muted: #cfc6b7;
+  --ink: #191713;
+  --muted: #6b6357;
+  --faint: #8a8173;
+  --placeholder: #9b9184;
+  --whisper: #b9ae9c;
+  --body: #3b3731;
+  --body-2: #5e574c;
+  --line: #d8cfc0;
+  --line-soft: #e4dacc;
+  --line-strong: #c8bca8;
+  --skeleton: #e7ddce;
+  --brand: #d9542b;
+  --brand-strong: #b8431f;
+  --on-brand: #fbf8f2;
+  --gold: #e3a867;
+  --success-line: #bbd6c7;
+  --success-soft: #eef6f1;
+  --success-text: #2f6b4f;
+  --danger: #b8431f;
+  --danger-line: #e8c6b9;
+  --danger-soft: #fbede7;
+  --danger-softer: #f8ded2;
+  --danger-text: #9d3f22;
+  --warn-soft: #fff4c7;
+  --warn-text: #8a6814;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --canvas: #12100e;
+  --surface: #1c1813;
+  --elevated: #26211a;
+  --elevated-strong: #322b22;
+  --elevated-muted: #27211a;
+  --panel: #2a241d;
+  --cream: #f1e9dc;
+  --cream-muted: #a79d8e;
+  --ink: #f0e9dd;
+  --muted: #b9ae9c;
+  --faint: #a29787;
+  --placeholder: #8a8173;
+  --whisper: #8f867a;
+  --body: #d8cfc0;
+  --body-2: #c2b8a7;
+  --line: #342e26;
+  --line-soft: #2a241c;
+  --line-strong: #453d31;
+  --skeleton: #262019;
+  --brand: #e0653c;
+  --brand-strong: #c24f28;
+  --success-line: #2f4a3c;
+  --success-soft: #1d2b23;
+  --success-text: #8fd0ac;
+  --danger: #f0937c;
+  --danger-line: #532f25;
+  --danger-soft: #341f18;
+  --danger-softer: #452822;
+  --danger-text: #efa287;
+  --warn-soft: #3a3117;
+  --warn-text: #d9bc6b;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-elevated-strong: var(--elevated-strong);
+  --color-elevated-muted: var(--elevated-muted);
+  --color-panel: var(--panel);
+  --color-cream: var(--cream);
+  --color-cream-muted: var(--cream-muted);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-placeholder: var(--placeholder);
+  --color-whisper: var(--whisper);
+  --color-body: var(--body);
+  --color-body-2: var(--body-2);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-line-strong: var(--line-strong);
+  --color-skeleton: var(--skeleton);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-on-brand: var(--on-brand);
+  --color-gold: var(--gold);
+  --color-success-line: var(--success-line);
+  --color-success-soft: var(--success-soft);
+  --color-success-text: var(--success-text);
+  --color-danger: var(--danger);
+  --color-danger-line: var(--danger-line);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-softer: var(--danger-softer);
+  --color-danger-text: var(--danger-text);
+  --color-warn-soft: var(--warn-soft);
+  --color-warn-text: var(--warn-text);
+
+  /* Standard tokens consumed by the ui/ primitives (button, dialog, toast…). */
+  --color-background: var(--canvas);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--surface);
+  --color-popover-foreground: var(--ink);
+  --color-secondary: var(--elevated);
+  --color-secondary-foreground: var(--ink);
+  --color-primary: var(--brand);
+  --color-primary-foreground: var(--on-brand);
+  --color-accent: var(--elevated);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--brand);
+  --color-destructive-foreground: var(--on-brand);
+  --color-border: var(--line);
+  --color-input: var(--line);
+  --color-ring: var(--brand);
+  --color-muted-foreground: var(--faint);
+}

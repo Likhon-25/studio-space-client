@@ -45,9 +45,9 @@ const StudioCard = ({ studio }: { studio: Studio }) => {
   const deposit = studio.deposit ?? studio.securityDeposit;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#D8CFC0] bg-[#FBF8F2] transition-all duration-300 hover:-translate-y-1 hover:border-[#C4B8A5] hover:shadow-[0_30px_60px_-38px_rgba(25,23,19,0.55)]">
-      <div className="relative aspect-[4/3] overflow-hidden bg-[#191713]">
-        <div className="absolute inset-0 flex items-center justify-center text-[#6B6357]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-line-strong hover:shadow-[0_30px_60px_-38px_rgba(25,23,19,0.55)]">
+      <div className="relative aspect-[4/3] overflow-hidden bg-panel">
+        <div className="absolute inset-0 flex items-center justify-center text-muted">
           <Aperture className="size-8" strokeWidth={1.4} />
         </div>
 
@@ -60,30 +60,30 @@ const StudioCard = ({ studio }: { studio: Studio }) => {
           />
         )}
 
-        <span className="absolute top-4 left-4 inline-flex max-w-[calc(100%-2rem)] items-center gap-2 truncate rounded-full border border-white/20 bg-[#F4EEE4]/95 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.16em] text-[#191713] backdrop-blur-sm">
-          <span className="size-1.5 shrink-0 rounded-full bg-[#D9542B]" />
+        <span className="absolute top-4 left-4 inline-flex max-w-[calc(100%-2rem)] items-center gap-2 truncate rounded-full border border-white/20 bg-canvas/95 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.16em] text-ink backdrop-blur-sm">
+          <span className="size-1.5 shrink-0 rounded-full bg-brand" />
           {studio.category || "Creative space"}
         </span>
       </div>
 
       <div className="flex flex-1 flex-col p-5 sm:p-6">
         <div className="flex items-start justify-between gap-4">
-          <h2 className="line-clamp-2 font-serif text-[1.6rem] leading-[1.05] tracking-[-0.01em] text-[#191713]">
+          <h2 className="line-clamp-2 font-serif text-[1.6rem] leading-[1.05] tracking-[-0.01em] text-ink">
             {studio.title?.trim() || "Untitled studio"}
           </h2>
           <div className="shrink-0 text-right">
-            <p className="font-serif text-2xl leading-none text-[#191713]">
+            <p className="font-serif text-2xl leading-none text-ink">
               {money(rate)}
             </p>
-            <p className="mt-1 font-mono text-[8px] uppercase tracking-[0.16em] text-[#8A8173]">
+            <p className="mt-1 font-mono text-[8px] uppercase tracking-[0.16em] text-faint">
               per hour
             </p>
           </div>
         </div>
 
-        <p className="mt-2.5 flex items-start gap-1.5 text-xs text-[#6B6357]">
+        <p className="mt-2.5 flex items-start gap-1.5 text-xs text-muted">
           <MapPin
-            className="mt-0.5 size-3.5 shrink-0 text-[#D9542B]"
+            className="mt-0.5 size-3.5 shrink-0 text-brand"
             strokeWidth={1.8}
           />
           <span className="line-clamp-1">
@@ -97,39 +97,39 @@ const StudioCard = ({ studio }: { studio: Studio }) => {
               {visibleAmenities.map((amenity) => (
                 <span
                   key={amenity}
-                  className="rounded-full border border-[#E4DACC] bg-[#F4EEE4] px-2.5 py-1 text-[10px] font-medium text-[#5E574C]"
+                  className="rounded-full border border-line-soft bg-canvas px-2.5 py-1 text-[10px] font-medium text-body-2"
                 >
                   {amenity}
                 </span>
               ))}
               {extraAmenities > 0 && (
-                <span className="rounded-full border border-[#D9542B]/20 bg-[#D9542B]/5 px-2.5 py-1 text-[10px] font-medium text-[#D9542B]">
+                <span className="rounded-full border border-brand/20 bg-brand/5 px-2.5 py-1 text-[10px] font-medium text-brand">
                   +{extraAmenities}
                 </span>
               )}
             </>
           ) : (
-            <span className="text-[11px] text-[#8A8173]">
+            <span className="text-[11px] text-faint">
               Amenities on request
             </span>
           )}
         </div>
 
         <div className="mt-auto pt-5">
-          <div className="grid grid-cols-2 gap-3 border-t border-[#E4DACC] pt-4">
+          <div className="grid grid-cols-2 gap-3 border-t border-line-soft pt-4">
             <div>
-              <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#8A8173]">
+              <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-faint">
                 Security deposit
               </p>
-              <p className="mt-1 text-[13px] font-medium text-[#191713]">
+              <p className="mt-1 text-[13px] font-medium text-ink">
                 {money(deposit)}
               </p>
             </div>
             <div>
-              <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#8A8173]">
+              <p className="font-mono text-[8px] uppercase tracking-[0.16em] text-faint">
                 Capacity
               </p>
-              <p className="mt-1 text-[13px] font-medium text-[#191713]">
+              <p className="mt-1 text-[13px] font-medium text-ink">
                 {studio.capacity ? `Up to ${studio.capacity} guests` : "On request"}
               </p>
             </div>
@@ -138,10 +138,10 @@ const StudioCard = ({ studio }: { studio: Studio }) => {
 
         <Link
           href={`/studios/${studio._id}`}
-          className="mt-4 flex items-center justify-between rounded-full border border-[#E4DACC] py-1.5 pr-1.5 pl-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#191713] transition-colors hover:border-[#D9542B] hover:text-[#D9542B]"
+          className="mt-4 flex items-center justify-between rounded-full border border-line-soft py-1.5 pr-1.5 pl-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink transition-colors hover:border-brand hover:text-brand"
         >
           View details
-          <span className="flex size-7 items-center justify-center rounded-full bg-[#F4EEE4] transition-colors group-hover:bg-[#D9542B] group-hover:text-[#FBF8F2]">
+          <span className="flex size-7 items-center justify-center rounded-full bg-elevated transition-colors group-hover:bg-brand group-hover:text-[#FBF8F2]">
             <ArrowUpRight className="size-3.5" />
           </span>
         </Link>
@@ -159,14 +159,14 @@ const StudioSkeletons = () => (
     {Array.from({ length: 6 }).map((_, index) => (
       <div
         key={index}
-        className="overflow-hidden rounded-2xl border border-[#D8CFC0] bg-[#FBF8F2]"
+        className="overflow-hidden rounded-2xl border border-line bg-surface"
       >
-        <div className="aspect-[4/3] animate-pulse bg-[#E7DDCE]" />
+        <div className="aspect-[4/3] animate-pulse bg-skeleton" />
         <div className="space-y-3 p-5 sm:p-6">
-          <div className="h-5 w-3/4 animate-pulse rounded bg-[#E7DDCE]" />
-          <div className="h-3 w-1/2 animate-pulse rounded bg-[#E7DDCE]" />
-          <div className="h-7 w-full animate-pulse rounded bg-[#E7DDCE]" />
-          <div className="h-10 w-full animate-pulse rounded-full bg-[#E7DDCE]" />
+          <div className="h-5 w-3/4 animate-pulse rounded bg-skeleton" />
+          <div className="h-3 w-1/2 animate-pulse rounded bg-skeleton" />
+          <div className="h-7 w-full animate-pulse rounded bg-skeleton" />
+          <div className="h-10 w-full animate-pulse rounded-full bg-skeleton" />
         </div>
       </div>
     ))}
@@ -180,17 +180,17 @@ const StudiosEmpty = ({
   title: string;
   message: string;
 }) => (
-  <div className="mt-8 rounded-2xl border border-dashed border-[#C8BCA8] bg-[#FBF8F2] px-6 py-16 text-center">
-    <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-[#D9542B]/10 text-[#D9542B]">
+  <div className="mt-8 rounded-2xl border border-dashed border-line-strong bg-surface px-6 py-16 text-center">
+    <span className="mx-auto flex size-12 items-center justify-center rounded-full bg-brand/10 text-brand">
       <Aperture className="size-5" strokeWidth={1.6} />
     </span>
-    <h2 className="mt-5 font-serif text-3xl text-[#191713]">{title}</h2>
-    <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-[#6B6357]">
+    <h2 className="mt-5 font-serif text-3xl text-ink">{title}</h2>
+    <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted">
       {message}
     </p>
     <Link
       href="/dashboard/add-new-studio"
-      className="mt-6 inline-flex h-10 items-center justify-center rounded-full bg-[#D9542B] px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F]"
+      className="mt-6 inline-flex h-10 items-center justify-center rounded-full bg-brand px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#FBF8F2] transition-colors hover:bg-brand-strong"
     >
       List your studio
     </Link>
@@ -270,25 +270,25 @@ const StudiosPage = async ({
     : params.category;
 
   return (
-    <div className="min-h-svh bg-[#F4EEE4] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <div className="min-h-svh bg-canvas px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
     <div className="mx-auto max-w-[1280px]">
-      <div className="flex flex-col gap-6 border-b border-[#D8CFC0] pb-8 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-6 border-b border-line pb-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#D9542B]">
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-brand">
             Explore / Studios
           </p>
-          <h1 className="mt-3 font-serif text-5xl leading-[0.95] tracking-[-0.02em] text-[#191713] sm:text-6xl">
+          <h1 className="mt-3 font-serif text-5xl leading-[0.95] tracking-[-0.02em] text-ink sm:text-6xl">
             Find your next room.
           </h1>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#6B6357]">
+          <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
             Photo studios, sound stages, podcast lounges, and more — reserved by
             the hour and built for the work.
           </p>
         </div>
 
-        <div className="flex w-fit items-center gap-2 rounded-full border border-[#D8CFC0] bg-[#FBF8F2] px-3 py-1.5">
-          <span className="size-1.5 rounded-full bg-[#D9542B]" />
-          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#5E574C]">
+        <div className="flex w-fit items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5">
+          <span className="size-1.5 rounded-full bg-brand" />
+          <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-body-2">
             Now booking
           </span>
         </div>

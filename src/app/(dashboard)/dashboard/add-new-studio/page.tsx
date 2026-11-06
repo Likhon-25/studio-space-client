@@ -12,6 +12,7 @@ import {
   Lock,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "@/components/ui/toast";
 
 const categories = [
   "Photo Studios",
@@ -44,10 +45,10 @@ const checklist = [
 ];
 
 const fieldClass =
-  "h-11 w-full rounded-xl border border-[#D8CFC0] bg-[#F8F3EA] px-3.5 text-sm text-[#191713] outline-none transition-colors placeholder:text-[#9A9080] focus:border-[#D9542B] focus:ring-2 focus:ring-[#D9542B]/15";
+  "h-11 w-full rounded-xl border border-line bg-elevated px-3.5 text-sm text-ink outline-none transition-colors placeholder:text-placeholder focus:border-brand focus:ring-2 focus:ring-brand/15";
 
 const labelClass =
-  "mb-2 block font-mono text-[9px] uppercase tracking-[0.18em] text-[#5E574C]";
+  "mb-2 block font-mono text-[9px] uppercase tracking-[0.18em] text-body-2";
 
   const AddNewStudio = () => {
     const {data: session, isPending} = authClient.useSession()
@@ -95,37 +96,46 @@ const labelClass =
       }
 
       await result.json();
+      toast.add({
+        title: "Studio published",
+        description: "Your listing is now live in the roster.",
+      });
       router.push("/dashboard/my-studio-listings");
       router.refresh();
     } catch (error) {
       console.error(error);
-      setPublishing(false); 
+      toast.add({
+        title: "Publish failed",
+        description: "We could not publish your studio. Please try again.",
+        type: "error",
+      });
+      setPublishing(false);
     }
   }
 
   return (
-    <div className="min-h-svh bg-[#F4EEE4] px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+    <div className="min-h-svh bg-canvas px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#D9542B]">
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-brand">
               <Link href="/dashboard" className="hover:underline">
                 Dashboard
               </Link>{" "}
               / New listing
             </p>
-            <h1 className="mt-3 font-serif text-4xl leading-none tracking-[-0.02em] text-[#191713] sm:text-5xl">
+            <h1 className="mt-3 font-serif text-4xl leading-none tracking-[-0.02em] text-ink sm:text-5xl">
               Add a new studio.
             </h1>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#6B6357]">
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
               Share the details of your space and set the stage for your next
               creative collaboration.
             </p>
           </div>
 
-          <div className="flex w-fit items-center gap-2 rounded-full border border-[#D8CFC0] bg-[#FBF8F2] px-3 py-1.5">
-            <span className="size-1.5 rounded-full bg-[#D9542B]" />
-            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#5E574C]">
+          <div className="flex w-fit items-center gap-2 rounded-full border border-line bg-surface px-3 py-1.5">
+            <span className="size-1.5 rounded-full bg-brand" />
+            <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-body-2">
               Draft listing
             </span>
           </div>
@@ -134,18 +144,18 @@ const labelClass =
         <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_300px]">
           <form
             onSubmit={handleSubmit}
-            className="rounded-2xl border border-[#D8CFC0] bg-[#FBF8F2] p-5 shadow-sm sm:p-7 lg:p-8"
+            className="rounded-2xl border border-line bg-surface p-5 shadow-sm sm:p-7 lg:p-8"
           >
             <section>
               <div className="flex items-start gap-3">
-                <span className="mt-1 font-mono text-[10px] tracking-[0.2em] text-[#D9542B]">
+                <span className="mt-1 font-mono text-[10px] tracking-[0.2em] text-brand">
                   01
                 </span>
                 <div>
-                  <h2 className="font-serif text-2xl leading-none text-[#191713]">
+                  <h2 className="font-serif text-2xl leading-none text-ink">
                     Studio essentials
                   </h2>
-                  <p className="mt-2 text-xs text-[#8A8173]">
+                  <p className="mt-2 text-xs text-faint">
                     The core details creators use to find and compare your
                     space.
                   </p>
@@ -187,7 +197,7 @@ const labelClass =
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-[#8A8173]" />
+                    <ChevronDown className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-faint" />
                   </div>
                 </div>
 
@@ -261,7 +271,7 @@ const labelClass =
                     className={fieldClass}
                     placeholder="https://images.unsplash.com/..."
                   />
-                  <p className="mt-2 text-[11px] text-[#8A8173]">
+                  <p className="mt-2 text-[11px] text-faint">
                     Paste a hosted image URL. A wide, high-resolution shot works
                     best.
                   </p>
@@ -269,16 +279,16 @@ const labelClass =
               </div>
             </section>
 
-            <section className="mt-8 border-t border-[#E4DACC] pt-8">
+            <section className="mt-8 border-t border-line-soft pt-8">
               <div className="flex items-start gap-3">
-                <span className="mt-1 font-mono text-[10px] tracking-[0.2em] text-[#D9542B]">
+                <span className="mt-1 font-mono text-[10px] tracking-[0.2em] text-brand">
                   02
                 </span>
                 <div>
-                  <h2 className="font-serif text-2xl leading-none text-[#191713]">
+                  <h2 className="font-serif text-2xl leading-none text-ink">
                     The details
                   </h2>
-                  <p className="mt-2 text-xs text-[#8A8173]">
+                  <p className="mt-2 text-xs text-faint">
                     Give creators a feel for the space and what comes with it.
                   </p>
                 </div>
@@ -290,13 +300,13 @@ const labelClass =
                   {amenities.map((amenity) => (
                     <label
                       key={amenity}
-                      className="flex cursor-pointer items-center gap-3 rounded-xl border border-[#E4DACC] bg-[#F8F3EA] px-3.5 py-3 text-[13px] text-[#3B3731] transition-colors hover:border-[#C8BCA8] has-[:checked]:border-[#D9542B] has-[:checked]:bg-[#D9542B]/5"
+                      className="flex cursor-pointer items-center gap-3 rounded-xl border border-line-soft bg-elevated px-3.5 py-3 text-[13px] text-body transition-colors hover:border-line-strong has-[:checked]:border-brand has-[:checked]:bg-brand/5"
                     >
                       <input
                         type="checkbox"
                         name="amenities"
                         value={amenity}
-                        className="size-4 shrink-0 accent-[#D9542B]"
+                        className="size-4 shrink-0 accent-brand"
                       />
                       {amenity}
                     </label>
@@ -313,29 +323,29 @@ const labelClass =
                   name="overview"
                   rows={5}
                   required
-                  className="w-full resize-none rounded-xl border border-[#D8CFC0] bg-[#F8F3EA] px-3.5 py-3 text-sm leading-relaxed text-[#191713] outline-none transition-colors placeholder:text-[#9A9080] focus:border-[#D9542B] focus:ring-2 focus:ring-[#D9542B]/15"
+                  className="w-full resize-none rounded-xl border border-line bg-elevated px-3.5 py-3 text-sm leading-relaxed text-ink outline-none transition-colors placeholder:text-placeholder focus:border-brand focus:ring-2 focus:ring-brand/15"
                   placeholder="Describe the light, the floor, the atmosphere, and what makes this space special..."
                 />
               </div>
             </section>
 
-            <section className="mt-8 border-t border-[#E4DACC] pt-8">
+            <section className="mt-8 border-t border-line-soft pt-8">
               <div className="flex items-start gap-3">
-                <span className="mt-1 font-mono text-[10px] tracking-[0.2em] text-[#D9542B]">
+                <span className="mt-1 font-mono text-[10px] tracking-[0.2em] text-brand">
                   03
                 </span>
                 <div>
-                  <h2 className="font-serif text-2xl leading-none text-[#191713]">
+                  <h2 className="font-serif text-2xl leading-none text-ink">
                     Host details
                   </h2>
-                  <p className="mt-2 text-xs text-[#8A8173]">
+                  <p className="mt-2 text-xs text-faint">
                     Your account information is attached to this listing.
                   </p>
                 </div>
               </div>
 
-              <div className="mt-6 rounded-2xl border border-[#E4DACC] bg-[#F4EEE4] p-4 sm:p-5">
-                <div className="mb-4 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-[#8A8173]">
+              <div className="mt-6 rounded-2xl border border-line-soft bg-canvas p-4 sm:p-5">
+                <div className="mb-4 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.18em] text-faint">
                   <Lock className="size-3" />
                   Read only
                 </div>
@@ -350,7 +360,7 @@ const labelClass =
                       value={isPending ? "Loading..." : user?.name || ""}
                       readOnly
                       aria-readonly="true"
-                      className={`${fieldClass} cursor-not-allowed bg-[#EFE7DA] text-[#6B6357] focus:border-[#D8CFC0] focus:ring-0`}
+                      className={`${fieldClass} cursor-not-allowed bg-elevated-muted text-muted focus:border-line focus:ring-0`}
                     />
                   </div>
                   <div>
@@ -363,17 +373,17 @@ const labelClass =
                       value={isPending ? "Loading..." : user?.email || ""}
                       readOnly
                       aria-readonly="true"
-                      className={`${fieldClass} cursor-not-allowed bg-[#EFE7DA] text-[#6B6357] focus:border-[#D8CFC0] focus:ring-0`}
+                      className={`${fieldClass} cursor-not-allowed bg-elevated-muted text-muted focus:border-line focus:ring-0`}
                     />
                   </div>
                 </div>
               </div>
             </section>
 
-            <div className="mt-8 flex flex-col-reverse gap-3 border-t border-[#E4DACC] pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-8 flex flex-col-reverse gap-3 border-t border-line-soft pt-6 sm:flex-row sm:items-center sm:justify-between">
               <Link
                 href="/dashboard"
-                className="inline-flex h-11 items-center justify-center rounded-full px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#5E574C] transition-colors hover:bg-[#191713]/5 hover:text-[#191713]"
+                className="inline-flex h-11 items-center justify-center rounded-full px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-body-2 transition-colors hover:bg-panel/5 hover:text-ink"
               >
                 Cancel
               </Link>
@@ -381,7 +391,7 @@ const labelClass =
               <button
                 type="submit"
                 disabled={publishing || isPending}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#D9542B] px-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#FBF8F2] transition-colors hover:bg-[#B8431F] disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-brand px-6 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#FBF8F2] transition-colors hover:bg-brand-strong disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {publishing ? "Publishing..." : "Publish studio"}
                 <ArrowRight className="size-4" />
@@ -390,11 +400,11 @@ const labelClass =
           </form>
 
           <aside className="space-y-5">
-            <div className="rounded-2xl border border-[#D8CFC0] bg-[#FBF8F2] p-6">
-              <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-[#D9542B]">
+            <div className="rounded-2xl border border-line bg-surface p-6">
+              <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-brand">
                 Before you publish
               </p>
-              <h2 className="mt-3 font-serif text-2xl leading-tight text-[#191713]">
+              <h2 className="mt-3 font-serif text-2xl leading-tight text-ink">
                 A listing creators trust.
               </h2>
 
@@ -402,9 +412,9 @@ const labelClass =
                 {checklist.map((item) => (
                   <li
                     key={item}
-                    className="flex gap-3 text-[13px] leading-relaxed text-[#5E574C]"
+                    className="flex gap-3 text-[13px] leading-relaxed text-body-2"
                   >
-                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-[#D9542B]/10 text-[#D9542B]">
+                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
                       <Check className="size-3" strokeWidth={2.5} />
                     </span>
                     {item}
@@ -412,26 +422,26 @@ const labelClass =
                 ))}
               </ul>
 
-              <p className="mt-6 rounded-xl border border-[#E4DACC] bg-[#F4EEE4] p-4 text-[11px] leading-relaxed text-[#6B6357]">
+              <p className="mt-6 rounded-xl border border-line-soft bg-canvas p-4 text-[11px] leading-relaxed text-muted">
                 You can update rates, photos, and availability at any time from
                 My Studio Listings.
               </p>
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl bg-[#191713] p-6 text-[#F4EEE4]">
+            <div className="relative overflow-hidden rounded-2xl bg-panel p-6 text-cream">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(217,84,43,0.28),transparent_55%)]" />
               <div className="relative">
-                <Camera className="size-5 text-[#E3A867]" strokeWidth={1.6} />
+                <Camera className="size-5 text-gold" strokeWidth={1.6} />
                 <h2 className="mt-5 font-serif text-2xl leading-tight">
                   Need a hand?
                 </h2>
-                <p className="mt-2 text-[13px] leading-relaxed text-[#CFC6B7]">
+                <p className="mt-2 text-[13px] leading-relaxed text-cream-muted">
                   Our host team can help you price the space and present it at
                   its best.
                 </p>
                 <Link
                   href="/how-it-works"
-                  className="mt-5 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#E3A867] transition-colors hover:text-[#F4EEE4]"
+                  className="mt-5 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-gold transition-colors hover:text-cream"
                 >
                   Read the host guide
                   <ArrowUpRight className="size-3.5" />

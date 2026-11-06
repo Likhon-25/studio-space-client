@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { Aperture, ArrowUpRight } from "lucide-react";
+import {
+  Camera,
+  LayoutGrid,
+  Mic,
+  Music,
+  Palette,
+  Speaker,
+} from "lucide-react";
 
 export const studioCategories = [
   {
@@ -29,75 +36,67 @@ export const studioCategories = [
   },
 ];
 
-const StudioCategoryFilter = ({ selectedCategory }: { selectedCategory?: string }) => (
-  <div className="mt-8">
-    <div className="mb-4 flex items-end justify-between gap-4">
-      <div>
-        <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#D9542B]">
-          Browse by category
-        </p>
-        <h2 className="mt-1 font-serif text-2xl text-[#191713]">
-          Find the right kind of room.
-        </h2>
-      </div>
-      {selectedCategory && (
-        <Link
-          href="/studios"
-          className="shrink-0 rounded-full border border-[#D8CFC0] bg-[#FBF8F2] px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#191713] transition-colors hover:border-[#D9542B] hover:text-[#D9542B]"
-        >
-          Show all
-        </Link>
-      )}
-    </div>
+const filterIcons: Record<string, typeof Camera> = {
+  "Photo Studios": Camera,
+  "Sound Stages": Speaker,
+  "Podcast Rooms": Mic,
+  "Music Suites": Music,
+  "Art Workshops": Palette,
+};
 
-    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-      {studioCategories.map((category, index) => {
-        const active =
-          selectedCategory?.trim().toLowerCase() === category.name.toLowerCase();
+const StudioCategoryFilter = ({
+  selectedCategory,
+}: {
+  selectedCategory?: string;
+}) => {
+  const active = selectedCategory?.trim().toLowerCase();
+
+  const pills = [
+    { name: "All", href: "/studios", icon: LayoutGrid },
+    ...studioCategories.map((category) => ({
+      name: category.name,
+      href: `/studios?category=${encodeURIComponent(category.name)}`,
+      icon: filterIcons[category.name] ?? LayoutGrid,
+    })),
+  ];
+
+  return (
+    <div
+      role="group"
+      aria-label="Filter studios by category"
+      className="mt-6 flex flex-wrap items-center gap-2 sm:mt-8 sm:gap-2.5"
+    >
+      {pills.map((pill) => {
+        const isActive =
+          pill.name === "All" ? !active : active === pill.name.toLowerCase();
+        const Icon = pill.icon;
+
         return (
           <Link
-            key={category.name}
-            href={`/studios?category=${encodeURIComponent(category.name)}`}
-            aria-current={active ? "true" : undefined}
-            className={`group relative min-h-40 overflow-hidden rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] sm:min-h-48 ${
-              active
-                ? "border-[#D9542B] ring-2 ring-[#D9542B]/20"
-                : "border-[#D8CFC0] hover:border-[#D9542B]/60"
+            key={pill.name}
+            href={pill.href}
+            aria-current={isActive ? "page" : undefined}
+            className={`inline-flex h-9 items-center gap-2 whitespace-nowrap rounded-full border px-4 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4EEE4] sm:h-10 sm:px-5 ${
+              isActive
+                ? "border-[#D9542B] bg-[#D9542B] text-[#F4EEE4]"
+                : "border-[#D8CFC0] bg-[#FBF8F2] text-[#5E574C] hover:border-[#191713]/60 hover:text-[#191713]"
+                // ? "border-[#191713] bg-[#191713] text-[#F4EEE4]"
+                // : "border-[#D8CFC0] bg-[#FBF8F2] text-[#5E574C] hover:border-[#D9542B]/60 hover:text-[#191713]"
             }`}
           >
-            <div
-              aria-hidden="true"
-              style={{ backgroundImage: `url("${category.image}")` }}
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]"
+            <Icon
+              className={`size-3.5 shrink-0 transition-colors ${
+                isActive
+                  ? "text-[#191713]"
+                  : "text-[#8A8173] group-hover:text-[#D9542B]"
+              }`}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#12100E]/35 via-[#12100E]/20 to-[#12100E]/90" />
-            <div className="relative z-10 flex h-full min-h-32 flex-col justify-between sm:min-h-40">
-              <div className="flex items-start justify-between">
-                <span className="font-mono text-[8px] uppercase tracking-[0.16em] text-[#F4EEE4]/75">
-                  0{index + 1}
-                </span>
-                <span className={`flex size-8 items-center justify-center rounded-full border backdrop-blur-sm transition-colors ${
-                  active
-                    ? "border-[#D9542B] bg-[#D9542B] text-white"
-                    : "border-white/25 bg-white/10 text-white group-hover:border-[#D9542B] group-hover:bg-[#D9542B]"
-                }`}>
-                  {active ? <Aperture className="size-3.5" /> : <ArrowUpRight className="size-3.5" />}
-                </span>
-              </div>
-              <div>
-                <p className="font-mono text-[8px] uppercase tracking-[0.14em] text-[#E3A867]">
-                  {category.note}
-                </p>
-                <h3 className="mt-1 font-serif text-lg leading-tight text-[#F4EEE4]">
-                  {category.name}
-                </h3>
-              </div>
-            </div>
+            {pill.name}
           </Link>
         );
       })}
     </div>
-  </div>
-);
+  );
+};
 
 export default StudioCategoryFilter;

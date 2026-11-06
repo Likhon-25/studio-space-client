@@ -99,7 +99,7 @@ const labelClass =
       router.refresh();
     } catch (error) {
       console.error(error);
-      setPublishing(false);
+      setPublishing(false); 
     }
   }
 

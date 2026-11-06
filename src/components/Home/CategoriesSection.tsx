@@ -38,10 +38,10 @@ const CategoriesSection = () => (
   <section
     id="categories"
     aria-labelledby="categories-heading"
-    className="bg-[#F4EEE4] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+    className="bg-[#F4EEE4] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16"
   >
     <div className="mx-auto max-w-[1280px]">
-      <div className="flex flex-col gap-7 border-b border-[#D8CFC0] pb-8 sm:flex-row sm:items-end sm:justify-between">
+      <div className="flex flex-col gap-5 border-b border-[#D8CFC0] pb-6 sm:flex-row sm:items-end sm:justify-between sm:pb-7">
         <div>
           <div className="flex items-center gap-2">
             <span className="h-px w-8 bg-[#D9542B]" />
@@ -52,11 +52,11 @@ const CategoriesSection = () => (
 
           <h2
             id="categories-heading"
-            className="mt-4 max-w-2xl font-serif text-4xl leading-[0.95] tracking-[-0.02em] text-[#191713] sm:text-5xl lg:text-6xl"
+            className="mt-3 max-w-2xl font-serif text-3xl leading-[0.95] tracking-[-0.02em] text-[#191713] sm:text-4xl lg:text-5xl"
           >
             Browse by Studio <span className="italic">Categories.</span>
           </h2>
-          <p className="mt-4 max-w-xl text-sm leading-relaxed text-[#6B6357]">
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-[#6B6357]">
             Every kind of room for every kind of work — find the space that
             fits your next idea.
           </p>
@@ -71,48 +71,36 @@ const CategoriesSection = () => (
         </Link>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-        {categories.map((category, index) => (
+      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5">
+        {categories.map((category) => (
           <Link
             key={category.name}
             href={`/studios?category=${encodeURIComponent(category.name)}`}
-            className={`group relative flex min-h-[280px] flex-col overflow-hidden rounded-2xl border border-[#D8CFC0] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[#D9542B]/60 hover:shadow-[0_28px_55px_-32px_rgba(25,23,19,0.6)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4EEE4] sm:min-h-[340px] sm:p-6 lg:min-h-[400px] ${
-              index === categories.length - 1
-                ? "sm:col-span-2 lg:col-span-1"
-                : ""
-            }`}
+            className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#D8CFC0] bg-[#FBF8F2] transition-all duration-300 hover:-translate-y-1 hover:border-[#D9542B]/60 hover:shadow-[0_24px_48px_-30px_rgba(25,23,19,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D9542B] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F4EEE4]"
           >
-            <div
-              aria-hidden="true"
-              style={{ backgroundImage: `url("${category.image}")` }}
-              className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.05]"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-b from-[#12100E]/45 via-[#12100E]/10 to-[#12100E]/90"
-            />
+            <div className="relative aspect-[4/3] overflow-hidden bg-[#191713] sm:aspect-[16/10]">
+              <div
+                aria-hidden="true"
+                style={{ backgroundImage: `url("${category.image}")` }}
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-[1.03]"
+              />
+            </div>
 
-            <div className="relative z-10 flex flex-1 flex-col justify-between">
-              <div className="flex items-start justify-between gap-4">
-                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#F4EEE4]/70">
-                  0{index + 1}
-                </span>
-                <span className="flex size-9 shrink-0 items-center justify-center rounded-full border border-white/25 bg-white/10 text-[#F4EEE4] backdrop-blur-md transition-colors group-hover:border-[#D9542B] group-hover:bg-[#D9542B]">
-                  <ArrowUpRight
-                    className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    strokeWidth={1.8}
-                  />
-                </span>
-              </div>
-
-              <div>
-                <p className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#E3A867]">
+            <div className="flex flex-1 items-center justify-between gap-2 p-3 sm:p-4">
+              <div className="min-w-0">
+                <p className="font-mono text-[8px] font-medium uppercase tracking-[0.14em] text-[#D9542B]">
                   {category.note}
                 </p>
-                <h3 className="mt-2 font-serif text-[1.7rem] leading-[0.95] tracking-[-0.01em] text-[#F4EEE4] transition-colors group-hover:text-[#E3A867] sm:text-[1.85rem]">
+                <h3 className="mt-1 font-serif text-[15px] leading-tight text-[#191713] sm:text-base">
                   {category.name}
                 </h3>
               </div>
+              <span
+                aria-hidden="true"
+                className="flex size-6 shrink-0 items-center justify-center rounded-full border border-[#E4DACC] bg-[#F4EEE4] text-[#191713] transition-colors group-hover:border-[#D9542B] group-hover:bg-[#D9542B] group-hover:text-white"
+              >
+                <ArrowUpRight className="size-3" />
+              </span>
             </div>
           </Link>
         ))}
